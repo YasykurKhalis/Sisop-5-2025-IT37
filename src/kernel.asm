@@ -3,6 +3,17 @@
 global _putInMemory
 global _interrupt
 global _getBiosTick
+global _printChar
+
+; void printChar(char c)
+_printChar:
+    push bp
+    mov bp, sp
+    mov ah, 0x0E
+    mov al, [bp+4]
+    int 0x10
+    pop bp
+    ret
 
 ; unsigned int getBiosTick()
 _getBiosTick:

@@ -1,4 +1,5 @@
 ; bootloader.asm
+[org 0x7C00]
 bits 16
 
 KERNEL_SEGMENT equ 0x1000 ; kernel will be loaded at 0x1000:0x0000
