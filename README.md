@@ -4,8 +4,9 @@
 
 Nama | NRP
 --- | ---
-Amoes Noland | 5027231028
-Rafi' Afnaan Fathurrahman | 5027231040
+Ahmad Rabbani Fata | 5027241046
+Muhammad Huda Rabbani | 5027241098
+Yasykur Khalis Jati Maulana Yuwono | 5027241112
 
 ## Daftar Isi
 
