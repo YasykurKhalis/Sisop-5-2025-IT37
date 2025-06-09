@@ -181,3 +181,145 @@ https://github.com/user-attachments/assets/1cfa66b1-b2f5-4e3e-a4b2-ec8b012f6fbb
 ## Laporan
 
 > Isi sesuai pengerjaan.
+
+Soal 1 – Menampilkan Prompt dan Perintah Dasar
+
+Tujuan:
+Menampilkan prompt user> dan menangani command yo serta gurt.
+
+Implementasi:
+
+Prompt dibuat dengan printPrompt().
+
+Command yo menampilkan gurt, dan sebaliknya.
+
+```c
+if (strcmp(cmd, "yo") == true) {
+  printString("gurt\n");
+}
+else if (strcmp(cmd, "gurt") == true) {
+  printString("yo\n");
+}
+```
+Soal 2 – Implementasi Clear dan Warna
+
+Tujuan:
+Membuat command clear yang menghapus layar dan mengatur ulang warna tampilan.
+
+Implementasi:
+
+Fungsi clearScreen() membersihkan layar dengan putInMemory().
+
+Reset warna ke 0x0F (putih di atas hitam).
+
+```c
+if (strcmp(cmd, "clear") == true) {
+  clearScreen();
+  setColor(0x0F);
+}
+```
+Soal 3 – Command user
+
+Tujuan:
+Mengganti username yang tampil di prompt.
+
+Implementasi:
+
+Menyimpan base username.
+
+Jika ada argumen user <nama>, maka username diganti.
+
+```c
+else if (strcmp(cmd, "user") == true) {
+  strcpy(base_username, arg[0]);
+  strcpy(username, arg[0]);
+}
+```
+Soal 4 – Command grandcompany
+
+Tujuan:
+Mengganti tema warna dan menambahkan suffix prompt berdasarkan pilihan grand company.
+
+Implementasi:
+
+Menggunakan setColor() dan strcat() untuk membuat format seperti user@Storm>.
+
+```c
+if (strcmp(arg[0], "maelstrom") == true) {
+  setColor(0x0C);
+  strcpy(grandcompany_suffix, "Storm");
+}
+```
+Perbaikan dilakukan agar clear dan user tetap mempertahankan atau me-reset suffix sesuai ekspektasi.
+
+Soal 5 – Command Kalkulator
+
+Tujuan:
+Menambahkan operasi aritmatika dasar: add, sub, mul, div.
+
+Implementasi:
+
+Menggunakan atoi() dan itoa() dari std_lib.c.
+
+Untuk div, digunakan fungsi my_div() agar bisa menangani angka negatif tanpa pembagian integer biasa.
+
+```c
+else if (strcmp(cmd, "add") == true) {
+  result = a + b;
+} else if (strcmp(cmd, "div") == true) {
+  result = my_div(a, b);
+}
+```
+Soal 6 – Command yogurt dengan Random Response
+
+Tujuan:
+Membuat command yogurt yang membalas dengan kata acak seperti:
+
+yo
+
+ts unami gng </3
+
+sygau
+
+Implementasi:
+
+Memanfaatkan kombinasi antara my_mod() dan nilai ASCII dari karakter input untuk membuat pseudo-random index.
+
+```c
+int idx = my_mod((buf[0] * buf[1] + buf[2]), 3);
+```
+Hal ini membuat respon yogurt tidak berurutan dan lebih bervariasi.
+
+Soal 7 - Mengumpulkan semua command untuk compile menjadi satu di dalam makefile.
+
+Implementasi:
+
+Isi file makefile
+
+```makefile
+prepare:
+	dd if=/dev/zero of=bin/floppy.img bs=512 count=2880
+
+bootloader:
+	nasm -f bin src/bootloader.asm -o bin/bootloader.bin
+	dd if=bin/bootloader.bin of=bin/floppy.img bs=512 count=1 conv=notrunc
+
+stdlib:
+	bcc -ansi -c src/std_lib.c -o src/std_lib.o
+
+shell:
+	bcc -ansi -c src/shell.c -o src/shell.o
+
+kernel:
+	nasm -f as86 src/kernel.asm -o src/kernel-asm.o
+	bcc -ansi -c src/kernel.c -o src/kernel.o
+
+link:
+	ld86 -o bin/kernel.bin -d src/kernel.o src/kernel-asm.o src/std_lib.o src/shell.o	
+	dd if=bin/kernel.bin of=bin/floppy.img bs=512 seek=1 count=15 conv=notrunc
+
+build: prepare bootloader stdlib shell kernel link
+
+clean:
+	rm -f src/*.o bin/*.bin bin/floppy.img
+```
